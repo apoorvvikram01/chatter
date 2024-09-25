@@ -3,6 +3,7 @@ import cors from 'cors';
 import http from 'http';
 import {Server} from 'socket.io'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose';
 
 dotenv.config()
 
@@ -15,6 +16,16 @@ app.use (cors({
     credentials:true,
 }));
 app.use(express.json());
+
+try {
+    mongoose.connect(process.env.MONGO_URI)
+    .then (console.log('connected to mongodb'));
+   
+} catch (error) {
+    console.log(error)
+}
+   
+
 
 const server = http.createServer(app);
 
