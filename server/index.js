@@ -4,6 +4,7 @@ import http from 'http';
 import {Server} from 'socket.io'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
+import userRoute from '../server/routes/user.route.js'
 
 dotenv.config()
 
@@ -29,9 +30,7 @@ try {
 
 const server = http.createServer(app);
 
-app.get('/', (req, res) =>{
-    res.send("Everything is fine upto here!")
-})
+app.use('/api/v1', userRoute);
 
 
 server.listen(PORT, ()=>{
