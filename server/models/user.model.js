@@ -6,10 +6,7 @@ const userModel = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  username: {
-    type: String,
-    unique: true,
-  },
+ 
   email: {
     type: String,
     unique: true,

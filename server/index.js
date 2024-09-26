@@ -13,10 +13,7 @@ const PORT = process.env.PORT || 8000;
 
 const app = express();
 
-app.use (cors({
-    origin:'http://localhost:5173',
-    credentials:true,
-}));
+app.use (cors());
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
@@ -28,8 +25,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 const server = http.createServer(app);
 
-app.use('/api/v1', userRoute);
-app.use('/api/v1', authRoute);
+app.use('/api/', userRoute);
+app.use('/api/', authRoute);
 
 
 server.listen(PORT, ()=>{

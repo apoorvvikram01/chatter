@@ -16,7 +16,7 @@ export const signUpController = async (req, res) => {
     // Check whether it is an existing user
     const userExists = await User.findOne({ email });
     if (userExists) {
-      res.status(401).send({
+      res.status(401).json({
         message: "User already exists",
       });
     }

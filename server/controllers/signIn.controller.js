@@ -29,6 +29,9 @@ export const signInController = async (req, res) => {
         success: false,
       });
     }
+    
+    //If everything is ok, save the user
+    user.save();
 
     res.status(200).json({
       success: true,
