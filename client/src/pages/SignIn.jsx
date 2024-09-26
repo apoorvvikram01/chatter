@@ -63,7 +63,7 @@ const SignIn = () => {
 
           <p className="mt-4">
             New user?{' '}
-            <NavLink to="/signup" className="text-blue-600 hover:underline">
+            <NavLink to="/sign-up" className="text-blue-600 hover:underline">
               Sign Up
             </NavLink>
           </p>

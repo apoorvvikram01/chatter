@@ -8,9 +8,9 @@ const Header = () => {
 
   return (
     <Navbar className="bg-white dark:bg-gray-800 shadow-lg px-4 py-2 md:px-8 dark:border-gray-700 transition-colors duration-300 ease-in-out">
-      <Navbar.Brand href="/" className="text-xl font-bold text-gray-900 dark:text-white">
+      <NavLink href="/" className="text-xl font-bold text-gray-900 dark:text-white">
         Chatter
-      </Navbar.Brand>
+      </NavLink>
       <div className="flex items-center space-x-4">
        
         <Avatar

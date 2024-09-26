@@ -76,7 +76,7 @@ const SignUp = () => {
 
           <p className="mt-4">
             Already a user?{' '}
-            <NavLink to="/signin" className="text-blue-600 hover:underline">
+            <NavLink to="/sign-in" className="text-blue-600 hover:underline">
               Sign In
             </NavLink>
           </p>
