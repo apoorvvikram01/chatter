@@ -5,6 +5,7 @@ import {Server} from 'socket.io'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
 import userRoute from '../server/routes/user.route.js'
+import authRoute from '../server/routes/auth.route.js'
 
 dotenv.config()
 
@@ -18,19 +19,17 @@ app.use (cors({
 }));
 app.use(express.json());
 
-try {
-    mongoose.connect(process.env.MONGO_URI)
-    .then (console.log('connected to mongodb'));
-   
-} catch (error) {
-    console.log(error)
-}
+mongoose.connect(process.env.MONGO_URI)
+.then(()=>{
+    console.log("Database connected successfully")
+})
    
 
 
 const server = http.createServer(app);
 
 app.use('/api/v1', userRoute);
+app.use('/api/v1', authRoute);
 
 
 server.listen(PORT, ()=>{
