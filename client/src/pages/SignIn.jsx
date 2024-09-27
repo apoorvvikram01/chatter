@@ -1,8 +1,44 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React,{useState} from 'react';
+import { NavLink,useNavigate } from 'react-router-dom';
 import { FaGoogle } from 'react-icons/fa';
+import {Spinner,Alert} from 'flowbite-react'
 
 const SignIn = () => {
+  const [formData,setFormData] = useState({})
+  const [errorMessage,setErrorMessage] = useState(null)
+  const [loading,setLoading] = useState(false)
+  const navigate = useNavigate()
+  
+
+  const handleChange = (e)=>{
+    setFormData({...formData,[e.target.id] : e.target.value.trim()});
+  }
+  const handleSubmit =async (e)=>{
+    e.preventDefault()
+if( !email || !password){
+  return setErrorMessage ("Please fill all the fields")
+}
+try {
+  setLoading(true)
+  setErrorMessage(null)
+  const res = await fetch('http://localhost:3000/api/sign-in',{
+    method: 'POST',
+    headers:{'Content-Type': 'application/json'},
+    body: JSON.stringify(formData)
+  })
+  const data = await res.json();
+  if(data.success === false) {
+    setLoading(false)
+    return setErrorMessage(data.message)
+  }
+  if(res.ok){
+    navigate('/')
+  }
+} catch (error) {
+  setLoading(false)
+  setErrorMessage(error.message)
+}
+  }
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Left Section */}
@@ -18,7 +54,7 @@ const SignIn = () => {
         <div className="w-full max-w-md">
           <h2 className="text-3xl font-bold mb-6">Sign In</h2>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 mb-2" htmlFor="email">
                 Email
@@ -29,6 +65,7 @@ const SignIn = () => {
                 id="email"
                 placeholder="Enter your email"
                 required
+                onChange={handleChange}
               />
             </div>
 
@@ -42,11 +79,20 @@ const SignIn = () => {
                 id="password"
                 placeholder="Enter your password"
                 required
+                onChange={handleChange}
               />
             </div>
 
-            <button className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-              Sign In
+            <button 
+            disabled={loading}
+            className="w-full p-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+              {loading? (
+              <>
+              <Spinner size='sm' />
+              <span className="pl-3">Loading...</span>
+              </>
+             ) : "Sign Up "
+            }
             </button>
 
             <div className="flex items-center justify-center my-4">
@@ -69,6 +115,13 @@ const SignIn = () => {
           </p>
         </div>
       </div>
+      {
+      errorMessage &&(
+        <Alert className="mt-5" color='failure'>
+        {errorMessage}
+        </Alert>
+      )
+    }
     </div>
   );
 };
