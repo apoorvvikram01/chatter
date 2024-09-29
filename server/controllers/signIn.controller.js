@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken"
 
 export const signInController = async (req, res) => {
   const { email, password } = req.body;
@@ -24,14 +25,23 @@ export const signInController = async (req, res) => {
     //If user found then compare the password with the hashed password
     const comparePassword = bcryptjs.compareSync(password, user.password);
     if (!comparePassword) {
-      res.status(402).send({
+      res.status(402).json({
         message: "Email and password does not match",
         success: false,
       });
     }
     
-    //If everything is ok, save the user
-    user.save();
+    //Creata a jwt token
+    const token = jwt.sign({id: user.id},process.env.JWT_SECRET,{expiresIn: '1d'})
+
+    res.status(200).cookie("token",
+      token,
+      {
+        httpOnly: true,
+
+      }
+    )
+    
 
     res.status(200).json({
       success: true,
@@ -39,6 +49,7 @@ export const signInController = async (req, res) => {
       email: user.email,
       password: user.password,
       id: user._id,
+      token
     });
   } catch (error) {
     console.log(error);

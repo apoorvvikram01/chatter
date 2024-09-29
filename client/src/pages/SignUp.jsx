@@ -9,6 +9,7 @@ const SignUp = () => {
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
   
+  
 
   const handleChange = (e)=>{
     setFormData({...formData,[e.target.id] : e.target.value.trim()});
@@ -19,9 +20,12 @@ if(!fullName || !email || !password){
   return setErrorMessage ("Please fill all the fields")
 }
 try {
+  
   setLoading(true)
   setErrorMessage(null)
-  const res = await fetch('http://localhost:3000/api/sign-up',{
+  const hostAddress = import.meta.env.VITE_FRONTEND_HOST
+  
+  const res = await fetch(`${hostAddress}/api/sign-up`,{
     method: 'POST',
     headers:{'Content-Type': 'application/json'},
     body: JSON.stringify(formData)
@@ -32,7 +36,7 @@ try {
     return setErrorMessage(data.message)
   }
   if(res.ok){
-    navigate('/')
+    navigate('/start')
   }
 } catch (error) {
   setLoading(false)

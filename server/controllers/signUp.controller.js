@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 export const signUpController = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -24,11 +25,14 @@ export const signUpController = async (req, res) => {
     // Hash the password prior saving it into the database
     const hashedPassword = bcryptjs.hashSync(password,10)
 
+    
+
     // If user does not exist , create a new one
     const newUser = await User.create({
       fullName,
       email,
       password:hashedPassword,
+     
     });
 
     //If the user created successfully , send it to the server excluding the password
@@ -39,7 +43,8 @@ export const signUpController = async (req, res) => {
         id: newUser._id,
         fullName: newUser.fullName,
         email: newUser.email,
-        password: newUser.password
+        token: newUser.token
+      
       },
     });
   } catch (error) {

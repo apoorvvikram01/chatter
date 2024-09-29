@@ -8,7 +8,7 @@ const SignIn = () => {
   const [errorMessage,setErrorMessage] = useState(null)
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
-  
+  const hostAddress = import.meta.env.VITE_FRONTEND_HOST
 
   const handleChange = (e)=>{
     setFormData({...formData,[e.target.id] : e.target.value.trim()});
@@ -21,7 +21,7 @@ if( !email || !password){
 try {
   setLoading(true)
   setErrorMessage(null)
-  const res = await fetch('http://localhost:3000/api/sign-in',{
+  const res = await fetch(`${hostAddress}/api/sign-in`,{
     method: 'POST',
     headers:{'Content-Type': 'application/json'},
     body: JSON.stringify(formData)
@@ -32,12 +32,13 @@ try {
     return setErrorMessage(data.message)
   }
   if(res.ok){
-    navigate('/')
+    navigate('/start')
   }
 } catch (error) {
   setLoading(false)
   setErrorMessage(error.message)
 }
+setLoading(false)
   }
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -110,7 +111,7 @@ try {
           <p className="mt-4">
             New user?{' '}
             <NavLink to="/sign-up" className="text-blue-600 hover:underline">
-              Sign Up
+              Sign In
             </NavLink>
           </p>
         </div>
